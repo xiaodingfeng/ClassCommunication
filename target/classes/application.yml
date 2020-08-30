@@ -1,0 +1,73 @@
+
+spring:
+  mvc:
+    view:
+      suffix: .html
+      #resources下匹配
+    static-path-pattern: /**
+  resources:
+    #自定义路径
+    static-locations: classpath:/static/html/,classpath:/static/
+  jackson:
+    date-format: yyyy-MM-dd
+    time-zone: GMT+8
+  datasource:
+    url: jdbc:mysql://120.25.241.121:3306/test?serverTimezone=GMT%2b8&useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: xdf19981208
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  mail:
+    host: smtp.qq.com
+    username: 1440651649@qq.com
+    password: elhgambxrailgejj
+    properties.mail.smtp.port: 465
+    from: 1440651649@qq.com
+    properties.mail.smtp.starttls.enable: true
+    properties.mail.smtp.starttls.required: true
+    properties.mail.smtp.ssl.enable: true
+    default-encoding: utf-8
+  ## Redis 配置
+  redis:
+    ## Redis数据库索引（默认为0）
+    database: 0
+    ## Redis服务器地址
+    host: 120.25.241.121
+    ## Redis服务器连接端口
+    port: 6379
+    ## Redis服务器连接密码（默认为空）
+    password:
+    jedis:
+      pool:
+        ## 连接池最大连接数（使用负值表示没有限制）
+        #spring.redis.pool.max-active=8
+        max-active: 8
+        ## 连接池最大阻塞等待时间（使用负值表示没有限制）
+        #spring.redis.pool.max-wait=-1
+        max-wait: -1
+        ## 连接池中的最大空闲连接
+        #spring.redis.pool.max-idle=8
+        max-idle: 8
+        ## 连接池中的最小空闲连接
+        #spring.redis.pool.min-idle=0
+        min-idle: 0
+    ## 连接超时时间（毫秒）
+    timeout: 1200
+  configuration:
+    map-underscore-to-camel-case: true
+
+      #另外一种打印语句的方式
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#公共配置与profiles选择无关 mapperLocations指的路径是src/main/resources
+mybatis:
+  typeAliasesPackage: com.xiaobai.classcommunication.bean
+  mapperLocations: classpath:mapper/*.xml
+
+file:
+  #静态资源对外暴露的访问路径
+  staticAccessPath: /static/files/**
+  #文件上传目录（注意Linux和Windows上的目录结构不同）
+  #file.uploadFolder=/home/upload/
+  uploadFolder: C:/Users/雷万科技/Desktop/Web开发/classcommunication/图片上传/
+server:
+  port: 8080

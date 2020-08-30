@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaobai.classcommunication.mapper.UserMapper">
+    <select id="LoginCheck" resultType="integer">
+        select count(username) from class_user where email=#{Email} and password=#{PassWord}
+    </select>
+    <select id="CheckEmail" resultType="integer">
+        select count(email) from class_user where email=#{email}
+    </select>
+    <insert id="InsertUser" parameterType="com.xiaobai.classcommunication.bean.User">
+        insert into class_user(UserName,Email,Password,Time) values(#{UserName},#{Email},#{PassWord},#{Time})
+    </insert>
+    <select id="GetUserID" parameterType="string" resultType="integer">
+        select ID from class_user where Email=#{email}
+    </select>
+</mapper>
