@@ -22,7 +22,7 @@ public class Article implements Serializable {
     private Integer CommentsCount;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date UpdateTime;
-    private String GoodPost;
-    private String PlacedTop;
+    private Integer GoodPost;
+    private Integer PlacedTop;
 
 }

@@ -3,12 +3,18 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xiaobai.classcommunication.mapper.ReplyMapper">
-    <select id="getAllReply" resultType="com.xiaobai.classcommunication.bean.Reply">
-        select * from class_reply
+    <select id="getAllReplyById" resultType="com.xiaobai.classcommunication.bean.UserforReply">
+        select class_reply.*,class_user.Image,class_user.Role,class_arcticle.UserID from class_reply JOIN class_user on class_user.ID=class_reply.ReplyUserID
+
+left JOIN class_arcticle ON class_arcticle.ID=class_reply.ArticleID
+        where ArticleID=#{ArticleID}
     </select>
+<!--    <select id="getAllReplyById" resultType="com.xiaobai.classcommunication.bean.Reply">-->
+<!--        select * from class_reply where ArticleID=#{ArticleID}-->
+<!--    </select>-->
     <insert id="insertReply" parameterType="com.xiaobai.classcommunication.bean.Reply">
-        insert into class_reply(ArticleID,ReplyContent,LikeCount,ReplyTime)
-        values(#{ArticleID},#{ReplyContent},#{LikeCount},#{ReplyTime})
+        insert into class_reply(ArticleID,ReplyContent,LikeCount,ReplyTime,ReplyUserID)
+        values(#{ArticleID},#{ReplyContent},#{LikeCount},#{ReplyTime},#{ReplyUserID})
     </insert>
 
 </mapper>

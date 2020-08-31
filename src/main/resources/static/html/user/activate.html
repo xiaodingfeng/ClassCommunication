@@ -6,9 +6,7 @@
   <meta charset="utf-8">
   <title>激活邮箱</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="keywords" content="fly,layui,前端社区">
-  <meta name="description" content="Fly社区是模块化前端UI框架Layui的官网社区，致力于为web开发提供强劲动力">
-  <link rel="stylesheet" href="../../../res/layui/css/layui.css">
+   <link rel="stylesheet" href="../../../res/layui/css/layui.css">
   <link rel="stylesheet" href="../../../res/css/global.css">
 </head>
 <body>
@@ -16,7 +14,7 @@
 <div class="header-page"></div>
 
 <div class="layui-container fly-marginTop fly-user-main">
-  <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
+  <ul class="layui-nav layui-nav-tree layui-nav-side layui-inline" lay-filter="user">
     <li class="layui-nav-item">
       <a href="home.html">
         <i class="layui-icon">&#xe609;</i>
@@ -98,17 +96,16 @@
 <script src="../../../res/layui/layui.js"></script>
 <script>
   $('.header-page').load('../common/header.html');
+  //注意：导航 依赖 element 模块，否则无法进行功能性操作
+  layui.use('element', function(){
+    var element = layui.element;
+
+    //…
+  });
 </script>
 <script src="../../../js/vue.min.js"></script>
-<script src="../../../js/getsession.js"></script>
 <script src="../../../js/user.js"></script>
-<script>
-  layui.config({
-    base: '../../../../easyeditor/mods/' //存放layui拓展模块的目录位置
-  }).extend({
-    easyeditor: 'easyeditor'
-  }).use(['easyeditor']);
-</script>
+
 
 </body>
 </html>

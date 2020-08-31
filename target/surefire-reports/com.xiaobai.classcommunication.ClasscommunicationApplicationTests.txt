@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.xiaobai.classcommunication.ClasscommunicationApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 77.797 s - in com.xiaobai.classcommunication.ClasscommunicationApplicationTests

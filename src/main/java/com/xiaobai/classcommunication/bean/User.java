@@ -15,7 +15,10 @@ public class User implements Serializable {
     private String UserName;
     private String PassWord;
     private String Email;
-    private String Role;
+    private Integer Sex;
+    private String City;
+    private String Sign;
+    private Integer Role;
     private String Image;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date Time;

@@ -1,8 +1,12 @@
 package com.xiaobai.classcommunication.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 
 @Controller
 public class ReturnPageController {
@@ -30,14 +34,14 @@ public class ReturnPageController {
     public String forgethtml(){
         return "/user/forget";
     }
-    @PostMapping("/jie/indexhtml")
-    public String indexhtml(){
+    @GetMapping("/jie/indexhtml")
+    public String indexhtml()  {
         return "/jie/index";
     }
-//    @RequestMapping("/user/homehtml")
-//    public String homehtml(){
-//        return "/user/home";
-//    }
+    @RequestMapping("/jie/detailhtml")
+    public String detailhtml(){
+        return "/jie/detail";
+    }
 
     /**
      * 添加文章页面
@@ -46,6 +50,12 @@ public class ReturnPageController {
     @RequestMapping("/jie/add")
     public String addPage(){
         return "/jie/add";
+    }
+
+    @RequestMapping("/contact/writer")
+    public String contact(){
+        System.out.println("进来了");
+        return "/other/contact";
     }
 
 }

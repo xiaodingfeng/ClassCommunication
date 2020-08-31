@@ -34,11 +34,11 @@ public class MvcConfigWeb implements WebMvcConfigurer {
             registry.addResourceHandler(staticAccessPath).addResourceLocations("file:" + uploadFolder);
 
     }
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(new LoginHandlerInterceptor()).addPathPatterns()
-//        .excludePathPatterns("/");
-//    }
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new LoginHandlerInterceptor()).addPathPatterns("/jie/add")
+        .excludePathPatterns();
+    }
 //    @Override
 //    public void addViewControllers(ViewControllerRegistry registry) {
 ////        registry.addViewController("/user/login").setViewName("main");

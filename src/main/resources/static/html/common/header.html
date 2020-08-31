@@ -1,54 +1,71 @@
-
-    <div class="fly-header layui-bg-black" id="vue">
+<style>
+    [v-cloak]{
+        display: none;
+    }
+    .bg-black{
+        background-color: #282C35;
+    }
+</style>
+<div class="fly-header bg-black"  >
     <div class="layui-container">
+        <ul >
         <a class="fly-logo" href="/">
-            <img src="/res/images/logo.png" alt="layui">
+            <img src="/res/images/小狗儿.png"  alt="小狗儿">
         </a>
-        <ul class="layui-nav fly-nav layui-hide-xs">
+        </ul>
+        <ul class="layui-nav fly-nav layui-hide-xs" style="position: relative;left: 100px" id="vue">
             <li class="layui-nav-item layui-this">
-                <a href="/"><i class="iconfont icon-jiaoliu"></i>交流</a>
+                <div v-text="'当前时间：'+returnTime" style="font-size: 15px;color: rgba(255,255,255,.7)"></div>
             </li>
         </ul>
-        <ul class="layui-nav fly-nav-user">
-
+        <ul class="layui-nav fly-nav-user" id="uservue">
             <!-- 未登入的状态 -->
-
-            <li v-if="session==null" class="layui-nav-item">
-                <a class="iconfont icon-touxiang layui-hide-xs" href="/user/loginhtml"></a>
-            </li>
-            <li v-if="session==null" class="layui-nav-item">
-                <a href="/user/loginhtml">登入</a>
-            </li>
-            <li v-if="session==null" class="layui-nav-item">
-                <a href="/user/reghtml">注册</a>
-            </li>
-            <li v-if="session==null" class="layui-nav-item layui-hide-xs">
-                <a href="/app/qq/" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" title="QQ登入" class="iconfont icon-qq"></a>
-            </li>
-            <li v-if="session==null" class="layui-nav-item layui-hide-xs">
-                <a href="/app/weibo/" onclick="layer.msg('正在通过微博登入', {icon:16, shade: 0.1, time:0})" title="微博登入" class="iconfont icon-weibo"></a>
-            </li>
-
-
+            <template v-if="session==null" >
+                <li  class="layui-nav-item" >
+                    <a :class="'iconfont icon-touxiang layui-hide-xs'" href="/user/loginhtml"></a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="/user/loginhtml" v-text="'登录'"></a>
+                </li>
+                <li  class="layui-nav-item">
+                    <a href="/user/reghtml" v-text="'注册'"></a>
+                </li>
+                <li  :class="'layui-nav-item layui-hide-xs'">
+                    <a href="/app/qq/" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" title="QQ登入" :class="'iconfont icon-qq'"></a>
+                </li>
+                <li  :class="'layui-nav-item layui-hide-xs'">
+                    <a href="/app/weibo/" onclick="layer.msg('正在通过微博登入', {icon:16, shade: 0.1, time:0})" title="微博登入" :class="'iconfont icon-weibo'"></a>
+                </li>
+            </template>
+            <template v-if="session!=null" >
             <!-- 登入后的状态 -->
-            <li class="layui-nav-item" v-if="session!=null">
+            <li class="layui-nav-item">
                 <a class="fly-nav-avatar" href="javascript:;">
-                    <cite class="layui-hide-xs">贤心</cite>
-                    <i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>
-                    <i class="layui-badge fly-badge-vip layui-hide-xs">VIP3</i>
-                    <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg">
+                    <cite class="layui-hide-xs" v-text="session.userName"></cite>
+                    <i :class="'iconfont icon-renzheng layui-hide-xs'" title="认证信息："></i>
+                    <i :class="'layui-badge fly-badge-vip layui-hide-xs'" v-text="session.role"></i>
+                    <img id="userimage" :src="session.image">
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="/user/sethtml"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
                     <dd><a href="/user/messagehtml"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>
-                    <dd><a href="/user/homehtml"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>
+                    <dd><a :href="'/user/homehtml?userID='+session.iD"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>
                     <hr style="margin: 5px 0;">
-                    <dd><a class="layui-btn layui-btn-primary" onclick="sessionStorage.removeItem('LoginUser');location.href='/';" style="text-align: center;">退出</a></dd>
+                    <dd><a class="layui-btn layui-btn-primary" onclick="location.href='/exit';" style="text-align: center;">退出</a></dd>
                 </dl>
             </li>
+            </template>
         </ul>
     </div>
 </div>
-
     <script src="../../../js/vue.min.js"></script>
-    <script src="../../../js/myvue.js"></script>
+
+<script src="../../../js/userinfo.js"></script>
+<script src="../../../js/myvue.js"></script>
+<script>
+    layui.use('element', function(){
+        //导航的hover效果、二级菜单等功能，需要依赖element模块
+        var element = layui.element;
+        element.init()
+    });
+</script>

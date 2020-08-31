@@ -12,10 +12,33 @@ spring:
     date-format: yyyy-MM-dd
     time-zone: GMT+8
   datasource:
-    url: jdbc:mysql://120.25.241.121:3306/test?serverTimezone=GMT%2b8&useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://47.115.118.94:3306/test?serverTimezone=GMT%2b8&useUnicode=true&characterEncoding=utf-8
     username: root
     password: xdf19981208
     driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+      #    建表语句
+      #    schema:
+      #      - classpath:sql/department.sql
+      #      - classpath:sql/employee.sql
+
+      #   数据源其他配置
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    #   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall,log4j
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
 
   mail:
     host: smtp.qq.com
@@ -32,7 +55,7 @@ spring:
     ## Redis数据库索引（默认为0）
     database: 0
     ## Redis服务器地址
-    host: 120.25.241.121
+    host: 47.115.118.94
     ## Redis服务器连接端口
     port: 6379
     ## Redis服务器连接密码（默认为空）
@@ -52,7 +75,7 @@ spring:
         #spring.redis.pool.min-idle=0
         min-idle: 0
     ## 连接超时时间（毫秒）
-    timeout: 1200
+    timeout: 15000
   configuration:
     map-underscore-to-camel-case: true
 
@@ -62,12 +85,12 @@ spring:
 mybatis:
   typeAliasesPackage: com.xiaobai.classcommunication.bean
   mapperLocations: classpath:mapper/*.xml
-
 file:
   #静态资源对外暴露的访问路径
   staticAccessPath: /static/files/**
   #文件上传目录（注意Linux和Windows上的目录结构不同）
   #file.uploadFolder=/home/upload/
-  uploadFolder: C:/Users/雷万科技/Desktop/Web开发/classcommunication/图片上传/
+#  uploadFolder: C:/Users/雷万科技/Desktop/Web开发/classcommunication/图片上传/
+  uploadFolder: /usr/class/
 server:
-  port: 8080
+  port: 80

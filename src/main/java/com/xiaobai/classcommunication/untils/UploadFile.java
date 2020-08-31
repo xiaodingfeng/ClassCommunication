@@ -1,5 +1,6 @@
 package com.xiaobai.classcommunication.untils;
 
+import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class UploadFile {
      * @param Path 上传路径
      * @return 访问路径
      */
-    public  String uploadfile(MultipartFile file,String Path)   {
+    public  String uploadfile(MultipartFile file,String Path) throws IOException {
         if (file.isEmpty()) {
             return null;
         }
@@ -44,6 +45,10 @@ public class UploadFile {
                 dest.mkdirs();
             try {
                 file.transferTo(dest);
+                Thumbnails.of(dest)
+                        .scale(0.25f)
+                        .allowOverwrite(true)
+                        .toFile(dest);
                 String staticAccessPath1=staticAccessPath.replaceAll("\\*","");
                 return staticAccessPath1+Path+fileName;
             } catch (IOException e) {

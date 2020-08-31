@@ -8,8 +8,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Mapper
 public interface UserMapper {
-     Integer LoginCheck(User user);
+     String LoginCheck(User user);
      Integer InsertUser(User user);
-     Integer CheckEmail(User user);
+     Integer CheckEmail(String email);
      Integer GetUserID(String email);
+     User GetUser(String email);
+     Integer UpdateUserImage(User user);
+     User GetUserbyID(Integer ID);
+     Integer UpdateUserInfo(User user);
+     Integer UpdateUserPassword(User user);
 }

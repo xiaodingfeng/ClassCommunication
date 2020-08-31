@@ -24,7 +24,7 @@
               <div class="layui-form-item">
                 <label for="L_email" class="layui-form-label">邮箱</label>
                 <div class="layui-input-inline">
-                  <input type="email" id="L_email" name="email" required lay-verify="email" autocomplete="off" class="layui-input">
+                  <input type="email" id="L_email" name="Email" required lay-verify="email" autocomplete="off" class="layui-input">
                 </div>
                 <button type="button" class="layui-btn layui-form-mid" id="CodeEmail"  >点击获取验证码 </button>
                 <div class="layui-form-mid layui-word-aux">将会成为您唯一的登入名</div>
@@ -40,13 +40,13 @@
               <div class="layui-form-item">
                 <label for="L_username" class="layui-form-label">昵称</label>
                 <div class="layui-input-inline">
-                  <input type="text" id="L_username" name="username" required lay-verify="required" autocomplete="off" class="layui-input">
+                  <input type="text" id="L_username" name="UserName" required lay-verify="required" autocomplete="off" class="layui-input">
                 </div>
               </div>
               <div class="layui-form-item">
                 <label for="L_pass" class="layui-form-label">密码</label>
                 <div class="layui-input-inline">
-                  <input type="password" id="L_pass" name="pass" required lay-verify="required" autocomplete="off" class="layui-input">
+                  <input type="password" id="L_pass" name="PassWord" required lay-verify="required" autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-form-mid layui-word-aux">6到16个字符</div>
               </div>
@@ -83,15 +83,9 @@
   $('.header-page').load('../common/header.html');
 </script>
 <script src="../../../js/vue.min.js"></script>
-<script src="../../../js/getsession.js"></script>
+
 <script src="../../../js/user.js"></script>
-<script>
-  layui.config({
-    base: '../../../../easyeditor/mods/' //存放layui拓展模块的目录位置
-  }).extend({
-    easyeditor: 'easyeditor'
-  }).use(['easyeditor']);
-</script>
+
 
 </body>
 </html>

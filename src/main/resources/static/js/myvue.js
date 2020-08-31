@@ -1,12 +1,59 @@
 
 var vm = new Vue({
     el: '#vue',
-    data: {
-        session:null,
+    data() {
+        return {
+            timer: "",//定义一个定时器的变量
+            currentTime: new Date().getFullYear() +
+                "-" +
+                this.appendZero(new Date().getMonth() + 1) +
+                "-" +
+                this.appendZero(new Date().getDate()) +
+                " " +
+                this.appendZero(new Date().getHours()) +
+                ":" +
+                this.appendZero(new Date().getMinutes()) +
+                ": " +
+                this.appendZero(new Date().getSeconds()), // 获取当前时间
+        }
+    },
+    computed:{
+        returnTime:function () {
+            return this.currentTime;
+        }
+    },
+    methods:{
+        //过滤加0
+        appendZero(obj) {
+            if (obj < 10) {
+                return "0" + obj;
+            } else {
+                return obj;
+            }
+        }
     },
     mounted:function () {
-        this.session=sessionStorage.getItem("LoginUser");
+        var that=this;
+        this.timer = setInterval(function() {
+            that.currentTime = //修改数据date
+                new Date().getFullYear() +
+                "-" +
+                that.appendZero(new Date().getMonth() + 1) +
+                "-" +
+                that.appendZero(new Date().getDate()) +
+                " " +
+                that.appendZero(new Date().getHours()) +
+                ":" +
+                that.appendZero(new Date().getMinutes()) +
+                ":" +
+                that.appendZero(new Date().getSeconds());
+        }, 1000);
     },
+    beforeDestroy() {
+        if (this.timer) {
+            clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
+        }
+    }
 
 })
 
@@ -104,7 +151,6 @@ window.randomColor=function ()
     var b = Math.floor(Math.random() * 256);
     return "rgb(" + r + "," + g + "," + b + ")";
 }
-
 /**
  * layui
  */
@@ -124,6 +170,21 @@ layui.use(['form','jquery','util'], function(){
     $("#canvas").on('click',function(){
         draw(show_num);
     })
+    var session1=null;
+    $.ajax({
+        async: false,
+        type: 'get',
+        dataType: 'json',
+        data: {},
+        url: "/user/info",
+        success: function(res){
+            if(res.status == 0) {
+                session1= res.data;
+            } else {
+            }
+        }, error: function(e){
+        }
+    });
     //监听提交
     form.on('submit(*)', function(data){
         var url = $(data.form).attr('action'),type=$(data.form).attr('method'), button = $(data.elem);
@@ -146,16 +207,28 @@ layui.use(['form','jquery','util'], function(){
             }
         }
         if(url==="/insertActicle"){
-            if (sessionStorage.getItem("LoginUser")==null){
+            if (session1==null){
                 layer.msg("未登录！",{shift: 6});
                 return false;
             }
-            url+=("?LoginUser="+sessionStorage.getItem("LoginUser"));
+            url+=("?LoginUser="+session1.email);
             var val = $("#L_vercode").val().toLowerCase();
             var num = show_num.join("");
             if (val!==num){
                 layer.msg("验证码不正确！！",{shift: 6});
+                $("#L_vercode").val("")
                 draw(show_num);
+                return false;
+            }
+        }
+        if(url==="/jie/reply") {
+            if (session1 == null) {
+                layer.msg("未登录！", {shift: 6});
+                return false;
+            }
+            url+=("?LoginUser="+session1.email);
+            if ($('#contentEd').val()==""||$('#contentEd').val()==null){
+                layer.msg("请填写内容！", {shift: 6});
                 return false;
             }
         }
@@ -169,28 +242,24 @@ layui.use(['form','jquery','util'], function(){
                 url: url,
                 success: function(res){
                     if(res.status === 0) {
-                        layer.msg(res.msg,{shift: 6},function(){
-                            if (res.action!=="/")
+                        layer.msg(res.msg,{icon: 6},function(){
+                            if (res.action=="/")
+                                location.href="/index";
+                            else if(res.action=="/this"){
                                 location.reload();
-                            else if (res.LoginUser!==null){
-                                sessionStorage.setItem("LoginUser",res.LoginUser);
-                                sessionStorage.setItem("LoginRole",res.LoginRole)
-                                location.href=res.action;
                             }
-                            else
-                                location.href=res.action;
                         });
                     } else {
-                        layer.msg(res.msg,{shift: 6});
+                        layer.msg(res.msg,{icon: 5},{shift: 6});
                     }
                     layer.close(index);
                 }, error: function(e){
                     layer.close(index);
-                    layer.msg('请求异常，请重试', {shift: 6});
+                    layer.msg('请求异常，请重试', {shift: 6},{icon: 5});
                 }
             });
         }catch (e) {
-            layer.msg(e, {shift: 6});
+            layer.msg(e, {shift: 6},{icon: 5});
         }
         return false;
     });
@@ -204,8 +273,8 @@ layui.use(['form','jquery','util'], function(){
             ,shadeClose: true
             ,maxWidth: 10000
             ,skin: 'fly-layer-search'
-            ,content: ['<form action="http://cn.bing.com/search">'
-                ,'<input autocomplete="off" placeholder="搜索内容，回车跳转" type="text" name="q">'
+            ,content: ['<form action="/jie/indexhtml?">'
+                ,'<input autocomplete="off" placeholder="搜索内容，回车跳转" type="text" name="seach">'
                 ,'</form>'].join('')
             ,success: function(layero){
                 var input = layero.find('input');
@@ -220,6 +289,23 @@ layui.use(['form','jquery','util'], function(){
                 });
             }
         })
+    });
+
+
+    /*锚点动效*/
+    $('a[href*=#],area[href*=#]').click(function() {
+        if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+            var $target = $(this.hash);
+            $target = $target.length && $target || $($.parseHTML('[name=' + this.hash.slice(1) + ']'));
+            if ($target.length) {
+                var targetOffset = $target.offset().top;
+                $('html,body').animate({
+                        scrollTop: targetOffset
+                    },
+                    250);
+                return false;
+            }
+        }
     });
     /**
      * 属性事件
@@ -239,7 +325,7 @@ layui.use(['form','jquery','util'], function(){
                 if(res.status === 0) {
 
                 } else {
-                    layer.msg('请正确填写邮箱！', {shift: 6});
+                    layer.msg(res.data, {shift: 6});
                 }
             }, error: function(e){
                 layer.msg('请求异常，请重试', {shift: 6});

@@ -3,14 +3,94 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xiaobai.classcommunication.mapper.ArticleMapper">
-    <select id="getAllArticle" resultType="com.xiaobai.classcommunication.bean.Article">
-        select * from class_arcticle
+    <select id="getAllArticle" resultType="com.xiaobai.classcommunication.bean.UserforArt">
+        select u.UserName,u.Role,u.Image,a.*,class_column.`Name` AS `ColumnsName`
+
+FROM class_arcticle a JOIN class_user u ON  a.UserID=u.ID
+
+JOIN class_column ON a.`Columns`=class_column.ID ORDER BY UpdateTime desc
     </select>
-    <insert id="insertArticle" parameterType="com.xiaobai.classcommunication.bean.Article">
-        insert into class_arcticle(UserID,Title,Content,Columns,WatchCount,CommentsCount,Experience)
-        values(#{UserID},#{Title},#{Content},#{Columns},#{WatchCount},#{CommentsCount},#{Experience})
+    <select id="getAllArticleCount" resultType="integer">
+        select Count(1) from class_arcticle where Columns=#{Columns}
+    </select>
+    <select id="getArticleTop15byColumns" resultType="com.xiaobai.classcommunication.bean.UserforArt">
+        select u.UserName,u.Role,u.Image,a.*,class_column.`Name` AS `ColumnsName`
+
+FROM class_arcticle a JOIN class_user u ON  a.UserID=u.ID
+
+JOIN class_column ON a.`Columns`=class_column.ID where Columns=#{Columns}
+        and YEARWEEK( date_format( UpdateTime, '%Y-%m-%d' ), 1 ) = YEARWEEK( now( ), 1 )
+        ORDER BY CommentsCount desc LIMIT 0,15
+    </select>
+    <select id="getArticlePlacedTop" resultType="com.xiaobai.classcommunication.bean.UserforArt">
+        select u.UserName,u.Role,u.Image,a.*,class_column.`Name` AS `ColumnsName`
+
+FROM class_arcticle a JOIN class_user u ON  a.UserID=u.ID
+
+JOIN class_column ON a.`Columns`=class_column.ID where PlacedTop=1 ORDER BY UpdateTime desc
+    </select>
+    <select id="getArticleTop15" resultType="com.xiaobai.classcommunication.bean.UserforArt">
+        select u.UserName,u.Role,u.Image,a.*,class_column.`Name` AS `ColumnsName`
+
+FROM class_arcticle a JOIN class_user u ON  a.UserID=u.ID
+
+JOIN class_column ON a.`Columns`=class_column.ID  ORDER BY CommentsCount desc LIMIT 0,15
+    </select>
+    <select id="getAllArticleTime15" resultType="com.xiaobai.classcommunication.bean.UserforArt">
+        select u.UserName,u.Role,u.Image,a.*,class_column.`Name` AS `ColumnsName`
+
+FROM class_arcticle a JOIN class_user u ON  a.UserID=u.ID
+
+JOIN class_column ON a.`Columns`=class_column.ID ORDER BY UpdateTime desc LIMIT 0,15
+    </select>
+    <select id="getListArticleByID" resultType="com.xiaobai.classcommunication.bean.UserforArt">
+        select u.UserName,u.Role,u.Image,a.*,class_column.`Name` AS `ColumnsName`
+
+FROM class_arcticle a JOIN class_user u ON  a.UserID=u.ID
+
+JOIN class_column ON a.`Columns`=class_column.ID where Columns=#{Columns} ORDER BY UpdateTime desc LIMIT #{pageNum}, #{pageSize}
+    </select>
+    <select id="getArticleTopNowWeek" resultType="com.xiaobai.classcommunication.bean.UserforArt">
+        select u.UserName,u.Role,u.Image,a.*,class_column.`Name` AS `ColumnsName`
+
+FROM class_arcticle a JOIN class_user u ON  a.UserID=u.ID
+
+JOIN class_column ON a.`Columns`=class_column.ID
+        WHERE YEARWEEK( date_format( UpdateTime, '%Y-%m-%d' ), 1 ) = YEARWEEK( now( ), 1 )
+        ORDER BY
+        CommentsCount DESC LIMIT 0,15
+    </select>
+    <insert id="insertArticle"  parameterType="com.xiaobai.classcommunication.bean.Article" useGeneratedKeys="true" keyProperty="ID"  >
+        insert into class_arcticle(UserID,Title,Content,Columns,WatchCount,CommentsCount,Experience,UpdateTime,GoodPost,PlacedTop)
+        values(#{UserID},#{Title},#{Content},#{Columns},#{WatchCount},#{CommentsCount},#{Experience},#{UpdateTime},#{GoodPost},#{PlacedTop})
     </insert>
-    <select id="getArticleByID" resultType="com.xiaobai.classcommunication.bean.Article" parameterType="integer">
-        select * from class_arcticle where ID=#{ID}
+    <select id="getArticleByID" resultType="com.xiaobai.classcommunication.bean.UserforArt" parameterType="integer">
+        select u.UserName,u.Role,u.Image,a.*,class_column.`Name` AS `ColumnsName`
+
+FROM class_arcticle a JOIN class_user u ON  a.UserID=u.ID
+
+JOIN class_column ON a.`Columns`=class_column.ID where a.ID=#{ID}
     </select>
+    <select id="getArticleByUserID" resultType="com.xiaobai.classcommunication.bean.UserforArt" parameterType="integer">
+        select u.UserName,u.Role,u.Image,a.*,class_column.`Name` AS `ColumnsName`
+
+FROM class_arcticle a JOIN class_user u ON  a.UserID=u.ID
+
+JOIN class_column ON a.`Columns`=class_column.ID where UserID=#{UserID}  ORDER BY UpdateTime desc LIMIT 0,15
+    </select>
+
+    <select id="getArticleBySearch" resultType="com.xiaobai.classcommunication.bean.UserforArt" parameterType="string">
+        select u.UserName,u.Role,u.Image,a.*,class_column.`Name` AS `ColumnsName`
+
+FROM class_arcticle a JOIN class_user u ON  a.UserID=u.ID
+
+JOIN class_column ON a.`Columns`=class_column.ID where Content like concat('%',#{Content},'%') or Title like concat('%',#{Content},'%') ORDER BY UpdateTime desc
+    </select>
+    <update id="updateArticleCommentsCount" parameterType="integer">
+        update class_arcticle set CommentsCount=CommentsCount+1 where ID=#{ID}
+    </update>
+    <update id="updateArticleWatchCountCount" parameterType="integer">
+        update class_arcticle set WatchCount=WatchCount+1 where ID=#{ID}
+    </update>
+
 </mapper>

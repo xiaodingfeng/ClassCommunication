@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
@@ -21,7 +22,6 @@ public class ColomnController {
         JSONObject json=new JSONObject();
         json.put("status",0);
         Collection<Column> allColomn = columnService.getAllColomn();
-        System.out.println(allColomn);
         json.put("data",allColomn);
         response.setContentType("text/html; charset=UTF-8"); //转码
         PrintWriter out=response.getWriter();

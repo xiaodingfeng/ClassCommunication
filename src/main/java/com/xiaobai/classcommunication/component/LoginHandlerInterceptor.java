@@ -1,21 +1,27 @@
 package com.xiaobai.classcommunication.component;
 
+import com.xiaobai.classcommunication.bean.User;
+import com.xiaobai.classcommunication.service.UserSevice;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 //拦截器，未登录不能看其他页面
 public class LoginHandlerInterceptor implements HandlerInterceptor {
+    @Autowired
+    UserSevice userSevice;
     //目标方法执行之前
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        Object user=request.getSession().getAttribute("LoginUser");
-        if(user==null){
-            request.setAttribute("msg","没有权限，请先登录！");
-            request.getRequestDispatcher("/").forward(request,response);
-            return false;
+        Object loginUser = request.getSession().getAttribute("LoginUser");
+        if (loginUser==null){
+//            request.getRequestDispatcher("/user/loginhtml").forward(request,response);
+            return true;
         }
         return true;
 
